@@ -28,3 +28,8 @@ type = "Cool"
 
 +[t_singer.cute]
 who = "superman"
+
++[usa]
++[usa]
+[usa.min]
+age = 27

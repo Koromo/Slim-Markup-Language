@@ -16,7 +16,7 @@ TEST(EXAMPLE_TABLE, ReadFile)
 TEST(EXAMPLE_TABLE, length)
 {
     const auto sml = parse("example.sml");
-    CHECK(sml->length() == 9);
+    CHECK(sml->length() == 10);
 }
 
 TEST(EXAMPLE_TABLE, contains)
@@ -168,4 +168,27 @@ TEST(EXAMPLE_TABLE_ARRAY, GetChildTableArray)
     CHECK(arr_1.length() == 1);
     CHECK(valueIs<string_t>("who", arr_1));
     CHECK(valueAs<string_t>("who", arr_1) == "superman");
+}
+
+TEST_GROUP(EXAMPLE_TABLE_PATH)
+{
+};
+
+TEST(EXAMPLE_TABLE_PATH, Priority)
+{
+    const auto sml = parse("example.sml");
+
+    const auto& usa = valueAs<array_t>("usa", sml);
+
+    const auto& usa_0 = valueAs<table_t>(0, usa);
+    CHECK(usa_0.length() == 0);
+
+    const auto& usa_1 = valueAs<table_t>(1, usa);
+    CHECK(usa_1.length() == 1);
+    CHECK(valueIs<table_t>("min", usa_1));
+
+    const auto& min = valueAs<table_t>("min", usa_1);
+    CHECK(min.length() == 1);
+    CHECK(valueIs<integer_t>("age", min));
+    CHECK(valueAs<integer_t>("age", min) == 27);
 }

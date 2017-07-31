@@ -185,6 +185,12 @@ namespace sml
             return val->ref();
         }
 
+        template <class T>
+        T& valueAs(size_t i)
+        {
+            return const_cast<T&>(const_cast<const array_t&>(*this).template valueAs<T>(i));
+        }
+
         /// Return true if the array type is 'T'.
         template <class T>
         bool arrayIs() const
@@ -293,12 +299,6 @@ namespace sml
         template <class T>
         const T& valueAs(const std::string& key) const
         {
-            return const_cast<table_t&>(*this).template valueAs<T>(key);
-        }
-
-        template <class T>
-        T& valueAs(const std::string& key)
-        {
             using Obj = ObjectType_t<T>;
 
             if (!contains(key))
@@ -309,8 +309,14 @@ namespace sml
             {
                 throw MismatchType();
             }
-            const auto val = std::dynamic_pointer_cast<Obj>(get(key));
+            const auto val = std::dynamic_pointer_cast<const Obj>(get(key));
             return val->ref();
+        }
+
+        template <class T>
+        T& valueAs(const std::string& key)
+        {
+            return const_cast<T&>(const_cast<const table_t&>(*this).template valueAs<T>(key));
         }
 
         /// Return true if the type of a value mapped by the key inside the table is 'T'.
@@ -330,17 +336,17 @@ namespace sml
     private:
         std::shared_ptr<const Value> get(const std::string& key) const
         {
-            return const_cast<table_t&>(*this).get(key);
-        }
-
-        std::shared_ptr<Value> get(const std::string& key)
-        {
             const auto found = table_.find(key);
             if (found != std::cend(table_))
             {
                 return found->second;
             }
             return nullptr;
+         }
+
+        std::shared_ptr<Value> get(const std::string& key)
+        {
+            return std::const_pointer_cast<Value>(const_cast<const table_t&>(*this).get(key));
         }
     };
 

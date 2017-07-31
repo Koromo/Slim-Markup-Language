@@ -361,17 +361,30 @@ namespace sml
             {
                 const auto key = path.front();
                 path.pop();
-                if (!valueIs<table_t>(key, *cur))
-                {
-                    throw ParseException("Key is not defined (" + key + ").");
-                }
-                cur = &(cur->template valueAs<table_t>(key));
 
                 if (!fullpath.empty())
                 {
                     fullpath += ".";
                 }
                 fullpath += key;
+
+                if (valueIs<array_t>(key, *cur))
+                {
+                    auto& arr = cur->template valueAs<array_t>(key);
+                    if (!arrayIs<table_t>(arr))
+                    {
+                        throw ParseException("Key is not defined (" + fullpath + ").");
+                    }
+                    cur = &(arr.template valueAs<table_t>(arr.length() - 1));
+                }
+                else if (valueIs<table_t>(key, *cur))
+                {
+                    cur = &(cur->template valueAs<table_t>(key));
+                }
+                else
+                {
+                    throw ParseException("Key is not defined (" + fullpath + ").");
+                }
             }
 
             const auto key = path.front();
@@ -460,7 +473,7 @@ namespace sml
                 // Erase front whitespaces.
                 consumeWhitespace(it, end);
 
-                if (it == end)
+                if (it == end || *it == '#')
                 {
                     continue;
                 }
@@ -480,7 +493,7 @@ namespace sml
 
                 // After that the parse, the line need to be empty
                 consumeWhitespace(it, end);
-                if (it != end)
+                if (it != end && *it != '#')
                 {
                     throw ParseException(std::string("Unexpected character \'" + *it + std::string("\'.")));
                 }
