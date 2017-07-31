@@ -460,13 +460,6 @@ namespace sml
             {
                 std::getline(in, line);
 
-                // Erase comment
-                const auto comment = line.find('#');
-                if (comment != std::string::npos)
-                {
-                    line.erase(comment);
-                }
-
                 auto it = std::cbegin(line);
                 auto end = std::cend(line);
 
