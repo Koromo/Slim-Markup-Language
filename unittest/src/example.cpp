@@ -16,7 +16,7 @@ TEST(EXAMPLE_TABLE, ReadFile)
 TEST(EXAMPLE_TABLE, length)
 {
     const auto sml = parse("example.sml");
-    CHECK(sml->length() == 8);
+    CHECK(sml->length() == 9);
 }
 
 TEST(EXAMPLE_TABLE, contains)
@@ -123,4 +123,49 @@ TEST(EXAMPLE_ARRAY, valueAs)
     CHECK(arrayIs<string_t>(arr_rec_1));
     CHECK(arr_rec_1.length() == 3);
     CHECK(valueAs<string_t>(2, arr_rec_1) == "str");
+}
+
+TEST_GROUP(EXAMPLE_TABLE_ARRAY)
+{
+};
+
+TEST(EXAMPLE_TABLE_ARRAY, GetTableArray)
+{
+    const auto sml = parse("example.sml");
+
+    const auto& arr = valueAs<array_t>("tarr", sml);
+    CHECK(arr.length() == 2);
+    CHECK(arrayIs<table_t>(arr));
+
+    const auto& arr_0 = valueAs<table_t>(0, arr);
+    CHECK(arr_0.length() == 1);
+    CHECK(valueIs<integer_t>("id", arr_0));
+    CHECK(valueAs<integer_t>("id", arr_0) == 10);
+
+    const auto& arr_1 = valueAs<table_t>(1, arr);
+    CHECK(arr_1.length() == 1);
+    CHECK(valueIs<integer_t>("kcal", arr_1));
+    CHECK(valueAs<integer_t>("kcal", arr_1) == 44);
+}
+
+TEST(EXAMPLE_TABLE_ARRAY, GetChildTableArray)
+{
+    const auto sml = parse("example.sml");
+
+    const auto& singer = valueAs<table_t>("t_singer", sml);
+    CHECK(valueIs<array_t>("cute", singer));
+
+    const auto& arr = valueAs<array_t>("cute", singer);
+    CHECK(arr.length() == 2);
+    CHECK(arrayIs<table_t>(arr));
+
+    const auto& arr_0 = valueAs<table_t>(0, arr);
+    CHECK(arr_0.length() == 1);
+    CHECK(valueIs<string_t>("type", arr_0));
+    CHECK(valueAs<string_t>("type", arr_0) == "Cool");
+
+    const auto& arr_1 = valueAs<table_t>(1, arr);
+    CHECK(arr_1.length() == 1);
+    CHECK(valueIs<string_t>("who", arr_1));
+    CHECK(valueAs<string_t>("who", arr_1) == "superman");
 }

@@ -16,3 +16,15 @@ size = 72
 color = "orange"
 size = 75
 food = "lol"
+
++[tarr]
+id = 10
+
++[tarr]
+kcal = 44
+
++[t_singer.cute]
+type = "Cool"
+
++[t_singer.cute]
+who = "superman"

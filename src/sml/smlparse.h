@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <fstream>
+#include <queue>
 
 namespace sml
 {
@@ -67,7 +68,7 @@ namespace sml
             const std::string key(keyB, keyE);
             if (table->contains(key))
             {
-                throw ParseException("Key duplicated (" + key + ").");
+                throw ParseException("Key duplicated (" + key + ")");
             }
 
             forward(it, end, [](char c) { return c != '='; });
@@ -305,13 +306,20 @@ namespace sml
             {
                 throw ParseException("Unexpected EOL.");
             }
+
+            const auto isTableArray = *it == '+';
+            if (isTableArray)
+            {
+                ++it;
+            }
+
             if (*it != '[')
             {
                 throw ParseException("Unexpected character \'" + *it + std::string("\'."));
             }
 
-            std::string key;
-            auto cur = root;
+            // Parse table path
+            std::queue<std::string> path;
 
             while (*it != ']')
             {
@@ -326,11 +334,13 @@ namespace sml
                     throw ParseException("Unexpected EOL.");
                 }
 
-                key = std::string(keyB, keyE);
+                const std::string key(keyB, keyE);
                 if (key.empty())
                 {
                     throw ParseException("Unexpected character \'" + *it + std::string("\'."));
                 }
+
+                path.push(key);
 
                 if (*it == ' ' || *it == '\t')
                 {
@@ -340,21 +350,71 @@ namespace sml
                         throw ParseException("Unexpected EOL.");
                     }
                 }
-
-                if (*it == '.')
-                {
-                    if (!valueIs<table_t>(key, *cur))
-                    {
-                        throw ParseException("Key is not defined (" + key + ").");
-                    }
-                    cur = &(cur->template valueAs<table_t>(key));
-                }
             }
 
             ++it; // Skip ']'.
 
+            // Create new table from path
+            std::string fullpath;
+            table_t* cur = root;
+            while (path.size() > 1)
+            {
+                const auto key = path.front();
+                path.pop();
+                if (!valueIs<table_t>(key, *cur))
+                {
+                    throw ParseException("Key is not defined (" + key + ").");
+                }
+                cur = &(cur->template valueAs<table_t>(key));
+
+                if (!fullpath.empty())
+                {
+                    fullpath += ".";
+                }
+                fullpath += key;
+            }
+
+            const auto key = path.front();
             const auto newTable = std::make_shared<table_t>();
-            cur->addValue(key, newTable);
+
+            if (!fullpath.empty())
+            {
+                fullpath += ".";
+            }
+            fullpath += key;
+
+            if (isTableArray)
+            {
+                if (!cur->contains(key))
+                {
+                    const auto arr = std::make_shared<array_t>();
+                    cur->addValue(key, arr);
+                    arr->insertBack(newTable);
+                }
+                else
+                {
+                    if (!valueIs<array_t>(key, *cur))
+                    {
+                        throw ParseException("Key is not defined (" + fullpath + ").");
+                    }
+
+                    auto& arr = cur->template valueAs<array_t>(key);
+                    if (!arrayIs<table_t>(arr))
+                    {
+                        throw ParseException("Key is not defined (" + fullpath + ").");
+                    }
+
+                    arr.insertBack(newTable);
+                }
+            }
+            else
+            {
+                if (cur->contains(key))
+                {
+                    throw ParseException("Key duplicated (" + fullpath + ")");
+                }
+                cur->addValue(key, newTable);
+            }
 
             return newTable.get();
         }
@@ -405,9 +465,9 @@ namespace sml
                     continue;
                 }
 
-                if (*it == '[')
+                if (*it == '[' || *it == '+')
                 {
-                    // [<table key>]
+                    // (+)[<table key>]
                     // Create new table
                     currentTable = parse_table(it, end, rootTable.get());
                 }
