@@ -499,7 +499,7 @@ namespace sml
     using ParseResult = table_t;
 
     /// Parse a .sml file
-    std::shared_ptr<const ParseResult> parse(const std::string& path)
+    inline std::shared_ptr<const ParseResult> parse(const std::string& path)
     {
         return Parser().parse(path);
     }

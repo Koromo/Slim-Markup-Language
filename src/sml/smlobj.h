@@ -21,13 +21,13 @@ namespace sml
     };
 
     /// Apply visitor for type safe processes.
-    void applyVisitor(Visitor& v, const Value& val)
+    inline void applyVisitor(Visitor& v, const Value& val)
     {
         val.accept(v);
     }
 
     /// ditto
-    void applyVisitor(Visitor&& v, const Value& val)
+    inline void applyVisitor(Visitor&& v, const Value& val)
     {
         val.accept(v);
     }
@@ -219,13 +219,13 @@ namespace sml
     }
 
     /// Apply visitor for type safe processes.
-    void applyVisitorAt(Visitor& v, size_t i, const array_t& val)
+    inline void applyVisitorAt(Visitor& v, size_t i, const array_t& val)
     {
         val.acceptAt(v, i);
     }
 
     /// ditto
-    void applyVisitor(Visitor&& v, size_t i, const array_t& val)
+    inline void applyVisitorAt(Visitor&& v, size_t i, const array_t& val)
     {
         val.acceptAt(v, i);
     }
@@ -380,25 +380,25 @@ namespace sml
     }
 
     /// Apply visitor for type safe processes.
-    void applyVisitorAt(Visitor& v, const std::string& key, const table_t& val)
+    inline void applyVisitorAt(Visitor& v, const std::string& key, const table_t& val)
     {
         val.acceptAt(v, key);
     }
 
     /// ditto
-    void applyVisitor(Visitor&& v, const std::string& key, const table_t& val)
+    inline void applyVisitorAt(Visitor&& v, const std::string& key, const table_t& val)
     {
         val.acceptAt(v, key);
     }
 
     /// ditto
-    void applyVisitorAt(Visitor& v, const std::string& key, const std::shared_ptr<const table_t>& val)
+    inline void applyVisitorAt(Visitor& v, const std::string& key, const std::shared_ptr<const table_t>& val)
     {
         val->acceptAt(v, key);
     }
 
     /// ditto
-    void applyVisitor(Visitor&& v, const std::string& key, const std::shared_ptr<const table_t>& val)
+    inline void applyVisitorAt(Visitor&& v, const std::string& key, const std::shared_ptr<const table_t>& val)
     {
         val->acceptAt(v, key);
     }
