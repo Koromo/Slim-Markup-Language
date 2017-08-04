@@ -69,20 +69,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\unittest\cpputest\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\src;D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Users\progg\Documents\visual studio 2015\Projects\sml\test\cpputest\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

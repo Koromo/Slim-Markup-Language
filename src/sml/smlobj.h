@@ -134,6 +134,13 @@ namespace sml
         std::vector<std::shared_ptr<Value>> arr_;
 
     public:
+        array_t() = default;
+        array_t(const array_t&) = default;
+        array_t(array_t&&) = default;
+
+        array_t& operator=(const array_t&) = default;
+        array_t& operator=(array_t&&) = default;
+
         bool is(TypeTag<array_t>) const
         {
             return true;
@@ -237,6 +244,13 @@ namespace sml
         std::unordered_map<std::string, std::shared_ptr<Value>> table_;
 
     public:
+        table_t() = default;
+        table_t(const table_t&) = default;
+        table_t(table_t&&) = default;
+
+        table_t& operator=(const table_t&) = default;
+        table_t& operator=(table_t&&) = default;
+
         bool is(TypeTag<table_t>) const
         {
             return true;
@@ -361,7 +375,7 @@ namespace sml
     template <class T>
     const T& valueAs(const std::string& key, const std::shared_ptr<const table_t>& t)
     {
-        return valueAs<T>(key, *t);
+        return t->template valueAs<T>(key);
     }
 
     /// Return true if the type of a value mapped by the key inside the table is 'T'.
@@ -376,7 +390,7 @@ namespace sml
     template <class T>
     bool valueIs(const std::string& key, const std::shared_ptr<const table_t>& t)
     {
-        return valueIs<T>(key, *t);
+        return t->template valueIs<T>(key);
     }
 
     /// Apply visitor for type safe processes.

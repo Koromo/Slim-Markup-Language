@@ -432,7 +432,7 @@ namespace sml
             return newTable.get();
         }
 
-        std::shared_ptr<table_t> parse(const std::string& path)
+        std::shared_ptr<const table_t> parse(const std::string& path)
         {
             std::ifstream in;
 
@@ -452,7 +452,7 @@ namespace sml
             };
             Closer closer{ &in };
 
-            std::shared_ptr<table_t> rootTable = std::make_shared<table_t>();
+            const auto rootTable = std::make_shared<table_t>();
             table_t* currentTable = rootTable.get();
 
             std::string line;
